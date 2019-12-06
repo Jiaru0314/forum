@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>forum首页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/animate.css">
+</head>
+<body>
+
+<!--导航-->
+<nav th:replace="_fragments :: menu(1)" class="ui segment me-nav">
+    <div class="ui">
+        <div class="ui secondary stackable menu massive">
+            <h2 class="ui grey header item">Forum</h2>
+            <a href="./index.html" class="item">首页</a>
+            <a href="./recommend.html" class="item">推荐</a>
+            <a href="./blogs-input.html" class="item">发布文章</a>
+            <a href="./manage-blog.html" class="item">文章管理</a>
+            <a href="./users.html" class="item">热门博主</a>
+            <a href="#" class="item">友链</a>
+            <a href="./archives.html" class="item">归档</a>
+            <div class="item ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="Search....">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+            <a href="./register.html" class="item">注册</a>
+            <a href="./login.html" class="item">登录</a>
+            <a href="#" class="item">退出登录</a>
+            <a href="user.html" class="right item"><img class="ui avatar image" src="/static/image/img.jpg">我</a>
+        </div>
+    </div>
+</nav>
+
+<!--中间类容-->
+<div id="waypoint" class="animated fadeIn me-margin-top">
+    <div class="ui container">
+        <div class="ui stackable grid">
+            <!--左边博客列表-->
+            <div class="eleven wide column">
+                <!--header-->
+                <div class="ui top attached segment">
+                    <div class="ui middle aligned two column grid">
+                        <div class="column">
+                            <h3 class="ui black header">博客</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!--content-->
+                <div class="ui attached segment">
+                    <div class="ui padded vertical segment" th:each="blog:${blogs}">
+                        <div class="ui middle aligned mobile reversed stackable grid">
+                            <div class="sixteen wide column">
+                                <h3 class="ui header">
+                                    <a href="./blog.html" th:href="@{/blog/{id}(id=${blog.id})}"
+                                       class="" th:text="${blog.title}">你真的理解什么是财富自由吗?</a></h3>
+                                <p class="" th:text="|${blog.content}......|">
+                                    正确做好任何一件事情的前提是清晰、正确的理解目标。而事实是，我们很多人很多时候根本没有对目标正确的定义，甚至根本从来就没有想过，只是大家都那么做而已…...</p>
+                                <div class="ui grid">
+                                    <div class="sixteen wide column">
+                                        <div class="ui mini horizontal link list">
+                                            <div class="item">
+                                                <img src="static/image/img.jpg"
+                                                     th:src="@{${blog.avatar==null?'/image/img.jpg':blog.avatar}}"
+                                                     alt="" class="ui avatar image">
+                                                <div class="content"><a href="#" class="header"
+                                                                        th:href="@{/user/{id}(id=${blog.user_id})}"
+                                                                        th:text="${blog.username}">徐志强</a></div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="calendar icon"></i><span
+                                                    th:text="${#dates.format(blog.create_time,'yyyy-MM-dd')}">2017-10-01</span>
+                                            </div>
+                                            <div class="item">
+                                                <i class="eye icon"></i> <span th:text="${blog.views}">2342</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--分页按钮-->
+                <div class="ui bottom attached segment" th:if="${page.pages}>1">
+                    <div class="ui middle aligned two column grid">
+                        <div class="column">
+                            <a href="#" th:href="@{/(page=${page.pageNum}-1)}" th:unless="${page.isFirstPage}"
+                               class="ui mini grey basic button">上一页</a>
+                        </div>
+                        <div class="right aligned column">
+                            <a href="#" th:href="@{/(page=${page.pageNum}+1)}" th:unless="${page.isLastPage}"
+                               class="ui mini grey basic button">下一页</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--右边的top-->
+            <div class="five wide column">
+
+                <!--分类-->
+                <div class="ui segments">
+                    <div class="ui secondary segment">
+                        <div class="ui two column grid">
+                            <div class="column">
+                                <i class="idea icon"></i>分类
+                            </div>
+                            <div class="right aligned column">
+                                <a href="#" th:href="@{type/types}">more <i
+                                        class="angle double right icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui segment">
+                        <div class="ui fluid vertical menu">
+                            <a href="#" th:href="@{/type/{id}(id=${type.id})}" class="item"
+                               th:each="type : ${types}">
+                                <span th:text="${type.name}">学习日志</span>
+                                <div class="ui grey basic left pointing label" th:text="${type.counts}">
+                                    13
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!--标签-->
+                <div class="ui segments me-margin-top-min">
+                    <div class="ui secondary segment">
+                        <div class="ui two column grid">
+                            <div class="column">
+                                <i class="tags icon"></i>标签
+                            </div>
+                            <div class="right aligned column">
+                                <a href="#" th:href="@{tag/tags}">more <i
+                                        class="angle double right icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui tag segment labels">
+                        <a href="#" th:href="@{/tag/{id}(id=${tag.id})}"
+                           class="ui label me-margin-top-minimum" th:each="tag : ${tags}">
+                            <span th:text="${tag.name}">Java</span>
+                            <div class="detail" th:text="${tag.counts}">23</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!--热门推荐-->
+                <div class="ui segments me-margin-top-min">
+                    <div class="ui secondary segment ">
+                        <i class="bookmark icon"></i>最新推荐
+                    </div>
+                    <div class="ui segment" th:each="blog : ${newBlogs}">
+                        <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" class=""
+                           th:text="${blog.title}">Spring Boot 从入门到精通</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div id="toolbar" class="me-padded me-fixed me-right-bottom" style="display: none">
+    <div class="ui vertical icon buttons ">
+        <div id="toTop-button" class="ui icon button"><i class="chevron up icon"></i></div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<!--底部footer-->
+<footer th:replace="_fragments :: footer" class="ui vertical segment me-margin-top me-margin-bottom">
+    <div class="ui center aligned container">
+        <div class="ui section divider"></div>
+        <p class="">Copyright © 2019 - 2020 XZQ</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+<script src="static/lib/waypoints/jquery.waypoints.js"></script>
+
+<script>
+    $('#toTop-button').click(function () {
+        $(window).scrollTo(0, 500);
+    });
+
+    var waypoint = new Waypoint({
+        element: document.getElementById('waypoint'),
+        handler: function (direction) {
+            if (direction == 'down') {
+                $('#toolbar').show(100);
+            } else {
+                $('#toolbar').hide(500);
+            }
+            console.log('Scrolled to waypoint!  ' + direction);
+        }
+    })
+</script>
+</body>
+</html>

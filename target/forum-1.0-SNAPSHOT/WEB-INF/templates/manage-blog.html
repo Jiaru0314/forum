@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客管理</title>
+    <!--    <link rel="stylesheet" href="../static/css/semantic.min.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/animate.css">
+</head>
+<body>
+
+<!--导航-->
+<nav th:replace="_fragments :: menu(4)" class="ui segment me-nav">
+    <div class="ui">
+        <div class="ui secondary stackable menu massive">
+            <h2 class="ui grey header item">Forum</h2>
+            <a href="#" class="item">首页</a>
+            <a href="index.html" class="item">推荐</a>
+            <a href="./blogs-input.html" class="item">发布文章</a>
+            <a href="./manage-blog.html" class="item active">文章管理</a>
+            <a href="./users.html" class="item">热门博主</a>
+            <a href="#" class="item">友链</a>
+            <a href="./archives.html" class="item">归档</a>
+            <div class="item ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="Search....">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+            <a href="./register.html" class="item">注册</a>
+            <a href="./login.html" class="item">登录</a>
+            <a href="#" class="item">退出登录</a>
+            <a href="user.html" class="right item">我</a>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<!--中间内容-->
+<div class="me-container-small ">
+    <div class="ui container">
+        <div class="ui success message blue" th:unless="${#strings.isEmpty(message)}">
+            <i class="close icon"></i>
+            <div class="header">提示：</div>
+            <p th:text="${message}">恭喜，操作成功！</p>
+        </div>
+        <div id="table-container">
+            <table class="ui compact black table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>标题</th>
+                    <th>类型</th>
+                    <th>阅读量</th>
+                    <th>点赞量</th>
+                    <th>发布时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="blog,iterStat : ${blogs}">
+                    <td th:text="${iterStat.count}">1</td>
+                    <td><a th:href="@{/blog/{id}(id=${blog.id})}" th:text="${blog.title}">我和我的祖国</a></td>
+                    <td th:text="${blog.typeName}">认知升级</td>
+                    <td th:text="${blog.views}">20</td>
+                    <td th:text="${blog.prefers}">604</td>
+                    <td th:text="${#dates.format(blog.create_time,'yyyy年MM月dd日')}">2017-10-02 09:45</td>
+                    <td>
+                        <a href="./blogs-input.html" th:href="@{/blog/edit/{id}(id=${blog.id})}"
+                           class="ui mini black basic button">编辑</a>
+                        <a href="#" th:href="@{/blog/delete/{id}(id=${blog.id})}"
+                           class="ui mini red basic button">删除</a>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="7">
+                        <!-- <div class="ui mini pagination menu" th:if="${page.totalPages}>1">
+                             <a onclick="page(this)" th:attr="data-page=${page.number}-1" class="item"
+                                th:unless="${page.first}">上一页</a>
+                             <a onclick="page(this)" th:attr="data-page=${page.number}+1" class=" item"
+                                th:unless="${page.last}">下一页</a>
+                         </div>-->
+                        <a href="./blogs-input.html" th:href="@{/blog/input}"
+                           class="ui mini right floated black basic button">新增</a>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+
+<script>
+    //消息提示关闭初始化
+    $('.message .close')
+        .on('click', function () {
+            $(this)
+                .closest('.message')
+                .transition('fade');
+        });
+</script>
+<br>
+<br>
+<!--底部footer-->
+<footer th:replace="_fragments :: footer" class="ui vertical segment me-margin-top me-margin-bottom">
+    <div class="ui center aligned container">
+        <div class="ui section divider"></div>
+        <p class="">Copyright © 2019 - 2020 XZQ</p>
+    </div>
+</footer>
+</body>
+</html>

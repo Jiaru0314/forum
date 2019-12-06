@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新建分类</title>
+    <!--    <link rel="stylesheet" href="../static/css/semantic.min.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/animate.css">
+    <script src="../static/js/jquery-3.4.1.min.js"></script>
+    <script src="../static/js/semantic.min.js"></script>
+</head>
+<body>
+
+<!--导航-->
+<nav th:replace="_fragments :: menu(1)" class="ui segment me-nav">
+    <div class="ui">
+        <div class="ui secondary stackable menu massive">
+            <h2 class="ui grey header item">Forum</h2>
+            <a href="#" class="item">首页</a>
+            <a href="./recommend.html" class="item">推荐</a>
+            <a href="./blogs-input.html" class="item">发布文章</a>
+            <a href="./manage-blog.html" class="item">文章管理</a>
+            <a href="./users.html" class="item">热门博主</a>
+            <a href="#" class="item">友链</a>
+            <a href="./archives.html" class="item">归档</a>
+            <div class="item ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="Search....">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+            <a href="./register.html" class="item">注册</a>
+            <a href="./login.html" class="item">登录</a>
+            <a href="#" class="item">退出登录</a>
+            <a href="./me.html" class="right item">我</a>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+<br>
+<!--中间内容-->
+<div class="me-container-small me-padded-tb-big">
+    <div class="ui container">
+        <form action="#" method="post" th:object="${type}"
+              th:action="*{id}==null ? @{/admin/types} : @{/admin/types/{id}(id=*{id})} " class="ui form">
+            <input type="hidden" name="id" th:value="*{id}">
+            <div class=" field">
+                <div class="ui left labeled input">
+                    <label class="ui teal basic label">名称</label>
+                    <input type="text" name="name" placeholder="分类名称" th:value="*{name}">
+                </div>
+            </div>
+
+            <div class="ui error message"></div>
+            <!--/*/
+            <div class="ui negative message" th:if="${#fields.hasErrors('name')}"  >
+              <i class="close icon"></i>
+              <div class="header">验证失败</div>
+              <p th:errors="*{name}">提交信息不符合规则</p>
+            </div>
+             /*/-->
+            <div class="ui right aligned container">
+                <button type="button" class="ui button" onclick="window.history.go(-1)">返回</button>
+                <button class="ui teal submit button">提交</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<!--底部footer-->
+<footer th:replace="_fragments :: footer" class="ui vertical segment me-margin-top me-margin-bottom">
+    <div class="ui center aligned container">
+        <div class="ui section divider"></div>
+        <p class="">Copyright © 2019 - 2020 XZQ</p>
+    </div>
+</footer>
+
+
+<!--/*/<th:block th:replace="_fragments :: script">/*/-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+
+<script>
+
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.form').form({
+        fields: {
+            title: {
+                identifier: 'name',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入分类名称'
+                }]
+            }
+        }
+    });
+
+</script>
+</body>
+</html>

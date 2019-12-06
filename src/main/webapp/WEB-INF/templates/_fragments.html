@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>forum首页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="/css/main.css" th:href="@{/static/css/main.css}">
+    <link rel="stylesheet" href="/css/animate.css" th:href="@{/static/css/animate.css}">
+</head>
+<body>
+
+<!--导航-->
+<nav th:fragment="menu(n)" class="ui segment me-nav">
+    <div class="ui">
+        <div class="ui secondary stackable menu massive">
+            <h2 class="ui grey header item">Forum</h2>
+            <a href="index.html" class="item m-mobile-hide" th:classappend="${n==1} ? 'active'" th:href="@{/}">推荐</a>
+            <a href="index.html" class="item m-mobile-hide" th:classappend="${n==2} ? 'active'" th:href="@{/recommend}">关注</a>
+            <a href="./blogs-input.html" class="item m-mobile-hide" th:classappend="${n==3} ? 'active'"
+               th:href="@{/blog/input}">发布文章</a>
+            <a href="./manage-blog.html" class="item m-mobile-hide" th:classappend="${n==4} ? 'active'"
+               th:href="@{/manage}" sec:authorize="isAuthenticated()">个人文章管理</a>
+            <a href="./users.html" class="item m-mobile-hide" th:classappend="${n==5} ? 'active'" th:href="@{/hotUser}">热门博主</a>
+            <a href="#" class="item m-mobile-hide" th:classappend="${n==6} ? 'active'" th:href="@{/tools}">友链</a>
+            <a href="./archives.html" class="item m-mobile-hide" th:classappend="${n==7} ? 'active'"
+               th:href="@{/archives}" sec:authorize="isAuthenticated()">归档</a>
+            <div class="right item m-mobile-hide">
+                <form name="search" action="#" th:action="@{/search}" method="post" target="_blank">
+                    <div class="ui icon input">
+                        <input type="text" name="query" placeholder="Search...." th:value="${query}">
+                        <i onclick="document.forms['search'].submit()" class="search link icon"></i>
+                    </div>
+                </form>
+            </div>
+            <a href="./register.html" class="item m-mobile-hide" th:href="@{/register}"
+               sec:authorize="isAnonymous()">注册</a>
+            <a href="./login.html" class="item m-mobile-hide" th:href="@{/login}" sec:authorize="isAnonymous()">登录</a>
+            <a href="#" class="item m-mobile-hide" th:href="@{/logout}" sec:authorize="isAuthenticated()">退出登录</a>
+            <a href="user.html" class="item m-mobile-hide" th:classappend="${n==8} ? 'active'" th:href="@{/user}"
+               sec:authorize="isAuthenticated()"><img
+                    class="ui avatar image"
+                    th:src="@{${session.user ==null?'/static/image/img.jpg': session.user.avatar}}">我</a>
+        </div>
+    </div>
+</nav>
+
+<!--底部footer-->
+<footer th:fragment="footer" class="ui vertical segment me-margin-top me-margin-bottom">
+    <div class="ui center aligned container">
+        <div class="ui section divider"></div>
+        <p class="">Copyright © 2019 - 2020 XZQ</p>
+    </div>
+</footer>
+
+<th:block th:fragment="script">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+</th:block>
+
+</body>
+</html>

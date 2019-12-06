@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客详情</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/animate.css">
+</head>
+<body>
+
+<!--导航-->
+<nav th:replace="_fragments :: menu(0)" class="ui segment me-nav">
+    <div class="ui">
+        <div class="ui secondary stackable menu massive">
+            <h2 class="ui blue header item">Forum</h2>
+            <a href="#" class="item">首页</a>
+            <a href="index.html" class="item">推荐</a>
+            <a href="./blogs-input.html" class="item">发布文章</a>
+            <a href="./manage-blog.html" class="item">文章管理</a>
+            <a href="./users.html" class="item">热门博主</a>
+            <a href="#" class="item">友链</a>
+            <a href="./archives.html" class="item active">归档</a>
+            <div class="item ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="Search....">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+            <a href="./register.html" class="item">注册</a>
+            <a href="./login.html" class="item">登录</a>
+            <a href="#" class="item">退出登录</a>
+            <a href="user.html" class="right item">我</a>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<!--中间内容-->
+<div id="waypoint" class="me-container-small animated fadeIn">
+    <div class="ui container">
+        <div class="ui top attached segment">
+            <div class="ui horizontal link list">
+                <div class="item">
+                    <img src="static/image/img.jpg" th:src="@{${blog.avatar}}" alt=""
+                         class="ui avatar image">
+                    <div class="content"><a href="#" class="header" th:text="${blog.username}"
+                                            th:href="@{/user/{id}(id=${blog.user_id})}">徐志强</a></div>
+                </div>
+                <div class="item">
+                    <i class="calendar icon"></i> <span th:text="${#dates.format(blog.create_time,'yyyy-MM-dd')}">2017-10-01</span>
+                </div>
+                <div class="item">
+                    <i class="eye icon"></i> <span th:text="${blog.views}">2342</span>
+                </div>
+            </div>
+        </div>
+        <div class="ui  attached padded segment">
+            <!--分类-->
+            <div class="ui right aligned basic segment">
+                <div class="ui blue basic label"><a href="#" th:href="@{/types/{id}(id=${blog.type_id})}"
+                                                    th:text="${blog.typeName}">英语</a></div>
+            </div>
+
+            <h2 class="ui center aligned header" th:text="${blog.title}">关于刻意练习的清单</h2>
+            <br>
+            <!--中间主要内容部分-->
+            <div class="content" th:utext="${blog.content}">
+
+                <h4 style="text-align: center;"><b><font color="#333333">网易云暖心评论</font></b><br></h4>
+                <p><br></p>
+                <p style="text-align: center;"><font color="#418caf">有一次在地铁口，遇见一个卖栀子花的老太太满头银发。</font></p>
+                <p style="text-align: center;"><font color="#418caf">买了花和她闲聊，“阿婆，侬年纪那么大了干什么还出来卖花啦，辛苦伐？”</font></p>
+                <p style="text-align: center;"><font color="#418caf">“哎哟，你不懂，今生卖花，来世漂亮。”</font></p>
+                <p style="text-align: center;"><font color="#418caf"><br></font></p>
+                <p style="text-align: center;"><font color="#333333"><b>———摘自网易云热评《Flightless&nbsp;Bird,&nbsp;American&nbsp;Mouth》&nbsp;​​</b></font>
+                </p>
+                <p><font color="#418caf"></font><font color="#333333"></font><b></b><br></p>
+            </div>
+            <br>
+            <br>
+
+            <!--点赞-->
+            <!--            th:href="@{/blog/prefer/{id}(id=${blog.id})}"-->
+            <div id="like" class="ui labeled button right floated">
+                <a class="ui red button">
+                    <i class="heart icon"></i> 喜欢
+                </a>
+                <div id="prefers" class="ui basic red left pointing label" th:text="${blog.prefers}">
+                    1,048
+                </div>
+            </div>
+
+            <!--标签-->
+            <div class="" th:unless="${blog.tags==null}">
+                <div class="ui basic blue left pointing label" th:each="tag : ${blog.tags}" th:text="${tag.name}">方法论
+                </div>
+            </div>
+
+        </div>
+
+        <div class="ui bottom attached segment" th:if="${blog.is_commentabled}">
+            <!--留言区域列表-->
+            <div id="comment-container" class="ui blue segment">
+                <div class="commentList">
+                    <div class="ui threaded comments" style="max-width: 100%;">
+                        <h3 class="ui dividing header">评论</h3>
+                        <div class="comment" th:each="comment : ${comments}">
+                            <a class="avatar">
+                                <img src="https://unsplash.it/100/100?image=1005"
+                                     th:src="@{${comment.avatar}}">
+                            </a>
+                            <div class="content">
+                                <a class="author">
+                                    <span th:text="${comment.username}">Matt</span>
+                                    <div class="ui mini basic blue left pointing label m-padded-mini"
+                                         th:if="${comment.user_id == session.user.id}">博主
+                                    </div>
+                                </a>
+                                <div class="metadata">
+                                    <span class="date"
+                                          th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
+                                </div>
+                                <div class="text" th:text="${comment.content}">
+                                    How artistic!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form id="comment-form" class="ui form" action="#" method="post" th:action="@{/comments}">
+                <input type="hidden" name="blog_id" th:value="${blog.id}">
+                <div class="field">
+                    <textarea name="content" placeholder="请输入评论信息..."></textarea>
+                </div>
+                <div class="fields">
+                    <div class="field m-mobile-wide">
+                        <button id="commentpost-btn" type="submit" class="ui blue button m-mobile-wide"><i
+                                class="edit icon"></i>发布
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<!--toobar-->
+<div id="toolbar" class="me-padded me-fixed me-right-bottom" style="display: none">
+    <div class="ui vertical icon buttons ">
+        <div id="toTop-button" class="ui icon button"><i class="chevron up icon"></i></div>
+    </div>
+</div>
+
+<!--底部footer-->
+<footer th:replace="_fragments :: footer" class="ui vertical segment me-margin-top me-margin-bottom">
+    <div class="ui center aligned container">
+        <div class="ui section divider"></div>
+        <p class="">Copyright © 2019 - 2020 XZQ</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+<script src="static/lib/waypoints/jquery.waypoints.js" th:src="@{/static/lib/waypoints/jquery.waypoints.js}"></script>
+
+<script>
+
+    $('#toTop-button').click(function () {
+        $(window).scrollTo(0, 500);
+    });
+
+    var waypoint = new Waypoint({
+        element: document.getElementById('waypoint'),
+        handler: function (direction) {
+            if (direction == 'down') {
+                $('#toolbar').show(100);
+            } else {
+                $('#toolbar').hide(500);
+            }
+            console.log('Scrolled to waypoint!  ' + direction);
+        }
+    });
+
+    $('#like').click(function () {
+        var id = [[${blog.id}]];
+        var prefers = [[${blog.prefers}]];
+
+        $.ajax({
+            url: "/blog/prefer/" + id,
+            type: "post",
+            success:
+                $('#prefers').html(prefers + 1)
+        })
+    })
+</script>
+</body>
+</html>

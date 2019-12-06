@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/main.css" th:href="@{../static/css/main.css}">
+    <link rel="stylesheet" href="../../static/css/animate.css" th:href="@{../static/css/animate.css}">
+</head>
+<body>
+
+<!--导航-->
+<nav th:replace="_fragments :: menu(8)" class="ui segment me-nav">
+    <div class="ui">
+        <div class="ui secondary stackable menu massive">
+            <h2 class="ui grey header item">Forum</h2>
+            <a href="#" class="item">首页</a>
+            <a href="index.html" class="item">推荐</a>
+            <a href="./blogs-input.html" class="item">发布文章</a>
+            <a href="./manage-blog.html" class="item">文章管理</a>
+            <a href="./users.html" class="item">热门博主</a>
+            <a href="#" class="item">友链</a>
+            <a href="./archives.html" class="item active">归档</a>
+            <div class="item ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="Search....">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+            <a href="./register.html" class="item">注册</a>
+            <a href="./login.html" class="item">登录</a>
+            <a href="#" class="item">退出登录</a>
+            <a href="./user.html" class="right item active">我</a>
+        </div>
+    </div>
+</nav>
+
+<!--中间内容-->
+<div class="animated fadeIn me-margin-top">
+    <div class="ui container">
+        <div class="ui stackable grid">
+            <div class="four wide column" style="text-align: center">
+                <img src="static/image/img.jpg" style="width: 200px"
+                     th:src="@{${user.avatar==null?'/static/image/img.jpg':user.avatar}}">
+                <h4 th:text="${user.username}">徐志强</h4>
+                <span th:text="'关注'+${user.follow}">关注 45</span> |
+                <span th:text="'粉丝'+${user.fans}">粉丝 100</span>
+                <br>
+                <br>
+                <a href="#" th:href="@{/user/edit/{id}(id=${user.id})}" th:if="${session.user.id == user.id}">个人信息编辑</a>
+            </div>
+            <div class="six wide column">
+                <!--关于我-->
+                <div class="ui top attached segment">
+                    <div class="ui header">关于我</div>
+                </div>
+                <div class="ui attached segment">
+                    <p class="me-text" th:text="${user.description==null?'这个人很懒，还没有留下个人介绍':user.description}">
+                        一个独立开发者，折腾在 0 和 1 世界的大叔；一个终身学习者，誓将学习无限循环.
+                        希望结识可以共同成长的小伙伴.</p>
+                </div>
+
+                <!--标签-->
+                <div class="ui top attached segment">
+                    <div class="ui header">我的标签</div>
+                </div>
+                <div class="ui attached segment">
+                    <a href="#" th:href="@{/tag/{id}(id=${tag.id})}"
+                       class="ui basic left pointing label m-margin-tb-tiny" th:each="tag : ${tags}">
+                        <span th:text="${tag.name}">方法论</span>
+                        <div class="detail" th:text="${tag.counts}">23</div>
+                    </a>
+                </div>
+
+                <!--分类-->
+                <div class="ui top attached segment">
+                    <div class="ui header">我的分类</div>
+                </div>
+                <div class="ui attached segment">
+                    <a href="#" th:href="@{/type/{id}(id=${type.id})}"
+                       class="ui basic left pointing label m-margin-tb-tiny" th:each="type : ${types}">
+                        <span th:text="${type.name}">方法论</span>
+                        <div class="detail" th:text="${type.counts}">23</div>
+                    </a>
+                </div>
+
+                <div class="ui bottom attached segment">
+                    <a href="#" class="ui circular icon button"><i class="github icon"></i></a>
+                    <a href="#" class="ui qq circular icon button" data-content="865729312"
+                       data-position="bottom center"><i class="qq icon"></i></a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<!--底部footer-->
+<footer th:replace="_fragments :: footer" class="ui vertical segment me-margin-top me-margin-bottom">
+    <div class="ui center aligned container">
+        <div class="ui section divider"></div>
+        <p class="">Copyright © 2019 - 2020 XZQ</p>
+    </div>
+</footer>
+<script>
+
+    $('.qq').popup();
+
+</script>
+</body>
+</html>

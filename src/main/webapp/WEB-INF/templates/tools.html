@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>归档</title>
+    <!--    <link rel="stylesheet" href="../static/css/semantic.min.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/animate.css">
+    <script src="../static/js/jquery-3.4.1.min.js"></script>
+    <script src="../static/js/semantic.min.js"></script>
+</head>
+<body>
+<!--导航-->
+<nav th:replace="_fragments :: menu(6)" class="ui segment me-nav">
+    <div class="ui">
+        <div class="ui secondary stackable menu massive">
+            <h2 class="ui grey header item">Forum</h2>
+            <a href="#" class="item">首页</a>
+            <a href="index.html" class="item">推荐</a>
+            <a href="./blogs-input.html" class="item">发布文章</a>
+            <a href="./manage-blog.html" class="item">文章管理</a>
+            <a href="./users.html" class="item">热门博主</a>
+            <a href="#" class="item">友链</a>
+            <a href="./archives.html" class="item active">归档</a>
+            <div class="item ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="Search....">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+            <a href="./register.html" class="item">注册</a>
+            <a href="./login.html" class="item">登录</a>
+            <a href="#" class="item">退出登录</a>
+            <a href="user.html" class="right item">我</a>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+
+<!--中间内容-->
+<div class="container ui me-margin-top grid">
+    <div class="container">
+        <h5 class="ui header">在线工具</h5>
+        <div class="ui list">
+            <a href="https://smallpdf.com/cn/pdf-to-word" target="_blank" class="item">PDF转换器</a>
+            <a href="https://www.bejson.com/jsoneditoronline" target="_blank" class="item">JSON编辑器</a>
+            <a href="http://tool.oschina.net/codeformat/html" target="_blank" class="item">代码格式化</a>
+            <a href="https://cli.im/" target="_blank" class="item">二维码生成器</a>
+            <a href="http://tool.chinaz.com/tools/native_ascii.aspx" target="_blank" class="item">在线编码转换</a>
+            <a href="http://www.toyaml.com/" target="_blank" class="item">YAML->Properties</a>
+            <a href="http://fanyi.youdao.com/" target="_blank" class="item">有道翻译</a>
+            <a href="https://www.easyicon.net/" target="_blank" class="item">图标下载</a>
+        </div>
+    </div>
+    <div class="container">
+        <h5 class="ui header">在线文档</h5>
+        <div class="ui list">
+            <a href="https://cn.vuejs.org/v2/api/" target="_blank" class="item">Vue</a>
+            <a href="https://www.jquery123.com/" target="_blank" class="item">JQuery</a>
+            <a href="http://www.runoob.com/bootstrap/bootstrap-tutorial.html" target="_blank" class="item">Bootstrap</a>
+            <a href="https://www.thymeleaf.org/" target="_blank" class="item">Thymeleaf</a>
+            <a href="https://onebugman.cn/semantic-ui/" target="_blank" class="item">Semantic UI</a>
+            <a href="http://editor.md.ipandao.com/" target="_blank" class="item">Markdown</a>
+        </div>
+    </div>
+    <div class="container">
+        <h5 class="ui header">优秀博客论坛</h5>
+        <div class="ui list">
+            <a href="https://www.csdn.net/" target="_blank" class="item">CSDN</a>
+            <a href="https://github.com/" target="_blank" class="item">GitHub</a>
+            <a href="https://www.runoob.com/" target="_blank" class="item">菜鸟教程</a>
+            <a href="https://www.cnblogs.com/demingblog/" target="_blank" class="item">逃离荒漠</a>
+            <a href="https://www.funtl.com/" target="_blank" class="item">千锋教育-李卫明</a>
+        </div>
+    </div>
+    <div class="container">
+        <h5 class="ui header">资源仓库</h5>
+        <div class="ui list">
+            <a href="https://mvnrepository.com/" target="_blank" class="item">MVNRepository</a>
+        </div>
+    </div>
+    <div class="container">
+        <h5 class="ui header">充电网站</h5>
+        <div class="ui list">
+            <a href="https://www.bilibili.com/" target="_blank" class="item">哔哩哔哩</a>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<!--底部footer-->
+<footer th:replace="_fragments :: footer" class="ui vertical segment me-margin-top me-margin-bottom">
+    <div class="ui center aligned container">
+        <div class="ui section divider"></div>
+        <p class="">Copyright © 2019 - 2020 XZQ</p>
+    </div>
+</footer>
+
+</body>
+</html>

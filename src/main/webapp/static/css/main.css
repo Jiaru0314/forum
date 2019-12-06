@@ -1,0 +1,139 @@
+/*html {
+    filter: grayscale(1);
+}*/
+
+.me-nav {
+    height: 100px !important;
+    width: 100% !important;
+    position: fixed !important;
+    top: 0 !important;
+    z-index: 99 !important;
+}
+
+/*margin*/
+.me-margin-top {
+    margin-top: 200px !important;
+}
+
+.me-margin-top-min {
+    margin-top: 30px !important;
+}
+
+.me-margin-top-minimum {
+    margin-top: 10px !important;
+}
+
+.me-margin-bottom-min {
+    margin-bottom: 30px !important;
+}
+
+
+.me-margin-bottom {
+    padding-top: 5em !important;
+    padding-bottom: 2em !important;
+}
+
+.me-border-none {
+    border: 1px solid transparent !important;
+}
+
+/*text*/
+.me-text {
+    font-weight: 300 !important;
+    letter-spacing: 1px !important;
+    line-height: 1.8;
+}
+
+
+/*padding*/
+.me-padded-tb-massive {
+    padding-top: 5em !important;
+    padding-bottom: 5em !important;
+}
+
+.me-padded {
+    padding: 1em !important;
+}
+
+.me-padded-tb-big {
+    padding-top: 3em !important;
+    padding-bottom: 3em !important;
+}
+
+/*-----container*/
+.me-container {
+    max-width: 72em !important;
+    margin: auto !important;
+}
+
+.me-container-small {
+    max-width: 60em !important;
+    margin: auto !important;
+}
+
+.me-container-tiny {
+    max-width: 290px !important;
+}
+
+/*text-align*/
+.me-text-align-center {
+    text-align: center;
+}
+
+.me-text-align-right {
+    text-align: right;
+}
+
+/*------positon-----*/
+.me-fixed {
+    position: fixed !important;
+    z-index: 10 !important;
+}
+
+.me-right-bottom {
+    bottom: 0 !important;
+    right: 0 !important;
+}
+
+.cs {
+    color: #f00;
+}
+
+/*------display------*/
+.me-inline-block {
+    display: inline-block !important;
+}
+
+.me-text-thin {
+    font-weight: 300 !important;
+}
+
+.me-margin-tb-tiny {
+    margin-top: 0.3em !important;
+    margin-bottom: 0.3em !important;
+}
+
+@media screen and (max-width: 768px) {
+    .m-mobile-hide {
+        display: none !important;
+    }
+
+    .m-mobile-show {
+        display: block !important;
+    }
+
+    .m-padded-lr-responsive {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .m-mobile-lr-clear {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .m-mobile-wide {
+        width: 100% !important;
+    }
+}
+
