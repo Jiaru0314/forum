@@ -16,14 +16,16 @@ public interface TagService {
 
     Integer deleteTagById(Integer tagId);
 
-    Integer updateTagNameById(String newTagName, Integer tagId);
+    Integer updateTag(Tag tag);
 
     List<Tag> findAllTag();
-
-    Integer findTagByTagName(String tagName);
 
     List<Tag> findHottestTag(Integer counts);
 
     List<Tag> findTagsByUserId(Integer userId);
+
+    Tag findTagByTagId(Integer tagId);
+
+    Tag findTagByTagName(String tagName);
 
 }

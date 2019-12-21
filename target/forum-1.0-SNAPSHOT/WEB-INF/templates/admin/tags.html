@@ -1,30 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
+<head th:replace="_fragments :: head(~{::title})">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>标签列表</title>
-    <!--    <link rel="stylesheet" href="../static/css/semantic.min.css">-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
-    <link rel="stylesheet" href="../static/css/main.css">
-    <link rel="stylesheet" href="../static/css/animate.css">
-    <script src="../static/js/jquery-3.4.1.min.js"></script>
-    <script src="../static/js/semantic.min.js"></script>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/animate.css">
 </head>
 <body>
 
 <!--导航-->
-<nav th:replace="_fragments :: menu(1)" class="ui segment me-nav">
+<nav th:replace="_fragments :: menu(0)" class="ui segment me-nav">
     <div class="ui">
         <div class="ui secondary stackable menu massive">
             <h2 class="ui grey header item">Forum</h2>
             <a href="#" class="item">首页</a>
             <a href="./recommend.html" class="item">推荐</a>
             <a href="./blogs-input.html" class="item">发布文章</a>
-            <a href="./manage-blog.html" class="item">文章管理</a>
+            <a href=".-blog.html" class="item">文章管理</a>
             <a href="./users.html" class="item">热门博主</a>
             <a href="#" class="item">友链</a>
-            <a href="./archives.html" class="item active">归档</a>
+            <a href="./archives.html" class="item">归档</a>
             <div class="item ui search">
                 <div class="ui icon input">
                     <input class="prompt" type="text" placeholder="Search....">
@@ -38,15 +35,12 @@
         </div>
     </div>
 </nav>
-<br>
-<br>
-<br>
 
 <div class="ui attached pointing menu me-margin-top">
     <div class="ui container">
         <div class="right menu">
-            <a href="#" th:href="@{/admin/tags/input}" class="item">新增</a>
-            <a href="#" th:href="@{/admin/tags}" class="blue active item">列表</a>
+            <a href="./tags-input.html" th:href="@{/admin/tag/input}" class="item">新增</a>
+            <a href="./tags.html" th:href="@{/admin/tags}" class="blue active item">列表</a>
         </div>
     </div>
 </div>
@@ -72,26 +66,34 @@
                 <td th:text="${iterStat.count}">1</td>
                 <td th:text="${tag.name}">刻意练习清单</td>
                 <td>
-                    <a href="#" th:href="@{/admin/tags/{id}/input(id=${tag.id})}"
+                    <a href="#" th:href="@{/admin/tag/{id}/input(id=${tag.id})}"
                        class="ui mini blue basic button">编辑</a>
-                    <a href="#" th:href="@{/admin/tags/{id}/delete(id=${tag.id})}"
-                       class="ui mini red basic button">删除</a>
+                    <!-- <a href="#" th:href="@{/admin/tag/{id}/delete(id=${tag.id})}"
+                        class="ui mini red basic button">删除</a>-->
                 </td>
             </tr>
             </tbody>
-            <!--<tfoot>
+            <tfoot>
             <tr>
-                <th colspan="6">
-                    <div class="ui mini pagination menu" th:if="${page.totalPages}>1">
-                        <a th:href="@{/admin/tags(page=${page.number}-1)}" class="  item"
-                           th:unless="${page.first}">上一页</a>
-                        <a th:href="@{/admin/tags(page=${page.number}+1)}" class=" item"
-                           th:unless="${page.last}">下一页</a>
+                <th colspan="9">
+                    <!--分页按钮-->
+                    <div class="ui bottom attached " th:if="${page.pages}>1">
+                        <div class="ui middle aligned two column grid">
+                            <div class="column">
+                                <a href="#" th:href="@{/admin/tags(page=${page.pageNum}-1)}"
+                                   th:unless="${page.isFirstPage}"
+                                   class="ui mini grey basic button">上一页</a>
+                            </div>
+                            <div class="right aligned column">
+                                <a href="#" th:href="@{/admin/tags(page=${page.pageNum}+1)}"
+                                   th:unless="${page.isLastPage}"
+                                   class="ui mini grey basic button">下一页</a>
+                            </div>
+                        </div>
                     </div>
-                    <a href="#" th:href="@{/admin/tags/input}" class="ui mini right floated blue basic button">新增</a>
                 </th>
             </tr>
-            </tfoot>-->
+            </tfoot>
         </table>
     </div>
 </div>

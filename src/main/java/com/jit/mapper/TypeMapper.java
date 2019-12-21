@@ -41,14 +41,13 @@ public interface TypeMapper {
     @Update("UPDATE t_type SET `name`=#{type.name} , `counts` = #{type.counts} WHERE id =#{type.id}")
     Integer updateType(@Param("type") Type type);
 
-
     /**
      * 查询最热的counts个Type
      *
      * @return
      */
     @Select("SELECT * FROM t_type ORDER BY counts DESC LIMIT #{counts} ")
-    List<Type> findHotsestType(@Param("counts") Integer counts);
+    List<Type> findHottestType(@Param("counts") Integer counts);
 
     /**
      * 查询所有的Type
@@ -67,6 +66,14 @@ public interface TypeMapper {
     @Select("SELECT * FROM `t_type` WHERE `id` = #{typeId}")
     Type findTypeByTypeId(@Param("typeId") Integer typeId);
 
+    /**
+     * 通过typeName查询Type
+     *
+     * @param typeName
+     * @return
+     */
+    @Select("SELECT * FROM `t_type` WHERE `name` = #{typeName}")
+    Type findTypeByTypeName(@Param("typeName") String typeName);
 
     /**
      * 通过用户Id查询其所有的Type

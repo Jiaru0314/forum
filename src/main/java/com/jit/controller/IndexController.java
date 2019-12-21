@@ -39,7 +39,6 @@ public class IndexController {
     private static final String SEARCH = "search";
     private static final String TOOLS = "tools";
     private static final String REDIRECT_LOGIN = "redirect:/login";
-    private static final String REDIRECT_INDEX = "redirect:/";
     private static final String REDIRECT_REGISTER = "redirect:/register";
 
     @Autowired
@@ -74,8 +73,7 @@ public class IndexController {
     public String toRecommend(Model model, HttpSession session) {
         User current_user = (User) session.getAttribute("user");
         Integer current_id = current_user.getId();
-        List<BlogDto> blogs = blogService.findRecommendBlogs(current_id);
-        model.addAttribute("blogs", blogs);
+        model.addAttribute("blogs", blogService.findRecommendBlogs(current_id));
         return RECOMMEND;
     }
 
@@ -92,17 +90,14 @@ public class IndexController {
     @GetMapping("/manage")
     public String toManage(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        List<Type> types = typeService.findAllType();
-        List<BlogDto> blogs = blogService.findBlogByUserId(user.getId());
-        model.addAttribute("types", types);
-        model.addAttribute("blogs", blogs);
+        model.addAttribute("blogs", blogService.findBlogByUserId(user.getId()));
         return MANAGE_BLOG;
     }
 
     @GetMapping("/hotUser")
     public String toHotUser(Model model, HttpSession session) {
         User current_user = (User) session.getAttribute("user");
-        List<User> users = userService.findAllUser();
+        List<User> users = userService.findHotUsers();
         if (current_user == null) {
             //如果用户未登录 显示所有的用户
             model.addAttribute("users", users);
@@ -124,7 +119,7 @@ public class IndexController {
 
     @PostMapping("/search")
     public String toSearch(@RequestParam String query, Model model) {
-        List<BlogDto> blogs = blogService.findBlogDtoByTitleLike(query);
+        List<BlogDto> blogs = blogService.findBlogDtoBySearchParam(query);
         model.addAttribute("blogs", blogs);
         model.addAttribute("blogCounts", blogs.size());
         return SEARCH;
@@ -134,40 +129,6 @@ public class IndexController {
     public String toTools() {
         return TOOLS;
     }
-
-/*
-    //处理登录
-    @PostMapping("/login")
-    public String login(@RequestParam String username,
-                        @RequestParam String password,
-                        HttpSession session,
-                        RedirectAttributes attributes) {
-        User check_user = userService.checkUsername(username);
-        //如果用户名不存在
-        if (check_user == null) {
-            attributes.addFlashAttribute("message", "用户不存在,请先注册");
-            return REDIRECT_LOGIN;
-        }
-        User user = userService.login(username, password);
-        //如果账号或密码错误不存在
-        if (user == null) {
-            attributes.addFlashAttribute("message", "用户名或密码错误");
-            return REDIRECT_LOGIN;
-        }
-        session.setAttribute("user", user);
-        return REDIRECT_INDEX;
-    }
-*/
-
- /*   //处理注销
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        if (session.getAttribute("user") != null) {
-            session.removeAttribute("user");
-        }
-        return REDIRECT_INDEX;
-    }
-*/
 
     //处理注册
     @PostMapping("register")

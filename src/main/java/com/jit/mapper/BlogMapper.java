@@ -58,8 +58,8 @@ public interface BlogMapper {
      * @param id
      * @return
      */
-    @Select("SELECT `t_blog`.`id`,`title`,`create_time`,`user_id`,`views`,`prefers`,`name` typeName FROM `t_blog` " +
-            "LEFT JOIN `t_type` ON `t_blog`.`type_id`=`t_type`.`id` where user_id = #{id}")
+    @Select("SELECT `t_blog`.`id`,`title`,`create_time`,`user_id`,`views`,`prefers`,`avatar`,`content`,`username`,`name` typeName FROM `t_blog` " +
+            "LEFT JOIN `t_type` ON `t_blog`.`type_id`=`t_type`.`id` LEFT JOIN `t_user` ON `user_id` =`t_user`.`id` where user_id = #{id}")
     List<BlogDto> findBlogsByUserId(@Param("id") Integer id);
 
     /**
@@ -156,11 +156,11 @@ public interface BlogMapper {
      * @param query
      * @return
      */
-    @Select("SELECT `t_blog`.`id`,`title`,`content`,`create_time`,`user_id`,`views` ,`avatar`,`username`,`name` typeName,`t_type`.`id` type_id  " +
+    @Select("SELECT `t_blog`.`id`,`title`,`content`,`create_time`,`user_id`,`views` ,`prefers`,`avatar`,`username`,`name` typeName,`t_type`.`id` type_id  " +
             "FROM `t_blog` LEFT JOIN `t_user` ON `user_id` =`t_user`.`id` " +
             "LEFT JOIN `t_type` ON `type_id` = `t_type`.`id` " +
             "WHERE `title` LIKE concat('%', #{query}, '%') or `content` LIKE concat('%', #{query}, '%') OR `t_type`.`name` LIKE concat('%', #{query}, '%')")
-    List<BlogDto> findBlogByTitleLike(@Param("query") String query);
+    List<BlogDto> findBlogBySearchParamLike(@Param("query") String query);
 
     /**
      * 随机查询十条blog
@@ -173,6 +173,13 @@ public interface BlogMapper {
             "ORDER BY RAND() LIMIT 10")
     List<BlogDto> listRandBlogDto();
 
-
-//    SELECT * FROM `t_blog`  ORDER BY RAND() LIMIT 10;
+    /**
+     * 查询所有BLog
+     *
+     * @return
+     */
+    @Select("SELECT `t_blog`.`id`,`title`,`create_time`,`user_id`,`views`,`username`,`prefers`,`name` typeName FROM `t_blog`" +
+            " LEFT JOIN `t_type` ON `t_blog`.`type_id`=`t_type`.`id` " +
+            "LEFT JOIN `t_user` ON `user_id` =`t_user`.`id` ORDER BY `create_time` DESC")
+    List<BlogDto> listAllBlogDto();
 }

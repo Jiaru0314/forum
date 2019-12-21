@@ -12,7 +12,7 @@ import java.util.List;
  **/
 public interface UserService {
 
-    void register(String username, String password);
+    Integer register(String username, String password);
 
     User login(String username, String password);
 
@@ -20,8 +20,12 @@ public interface UserService {
 
     User findUserByid(int id);
 
-    List<User> findAllUser();
+    List<User> findHotUsers();
 
     User checkUsername(String username);
+
+    List<User> findFansList(Integer userId);
+
+    List<User> findFollowsList(Integer userId);
 
 }

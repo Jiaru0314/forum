@@ -29,7 +29,7 @@ public interface UserMapper {
      * @param user
      */
     @Update("UPDATE `t_user` SET `password` =#{user.password} ,`nickname`=#{user.nickname},`avatar` =#{user.avatar} ," +
-            "`email` =#{user.email} ,`description` =#{user.description} ,`wechat` = #{user.wechat},`github` =#{user.github} ,`follow` = #{user.follow},`fans` =#{user.fans} ,`follow_ids` = #{user.follow_ids},`fans_ids` =#{user.fans_ids} WHERE `id` = #{user.id}")
+            "`email` =#{user.email} ,`description` =#{user.description} ,`phone` = #{user.phone},`github` =#{user.github} ,`follow` = #{user.follow},`fans` =#{user.fans} ,`follow_ids` = #{user.follow_ids},`fans_ids` =#{user.fans_ids} WHERE `id` = #{user.id}")
     void updateUser(@Param("user") User user);
 
     /**
@@ -52,12 +52,12 @@ public interface UserMapper {
     User findUserById(@Param("id") Integer id);
 
     /**
-     * 查询所有用户
+     * 查询十个热门博主 按粉丝数量排序
      *
      * @return
      */
-    @Select("select * from t_user")
-    List<User> findAllUser();
+    @Select("SELECT * FROM t_user ORDER BY `fans` DESC LIMIT 10")
+    List<User> findHotUsers();
 
     /**
      * 通过用户名查询用户
@@ -67,4 +67,16 @@ public interface UserMapper {
      */
     @Select("select * from t_user where username = #{username}")
     User findUserByUsername(@Param("username") String username);
+
+    
+
+    /*XML配置方式*/
+
+    /**
+     * 通过IdList查询相关联的Users
+     *
+     * @param idList
+     * @return
+     */
+    List<User> findRelatedUsers(@Param("idList") List<Integer> idList);
 }

@@ -1,9 +1,6 @@
 package com.jit.controller;
 
-import com.jit.pojo.Tag;
-import com.jit.pojo.Type;
 import com.jit.pojo.User;
-import com.jit.service.BlogService;
 import com.jit.service.TagService;
 import com.jit.service.TypeService;
 import com.jit.service.UserService;
@@ -18,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @program: forum
@@ -49,12 +45,9 @@ public class UserController {
     }
 
     private void setUserPageInfo(Integer user_id, Model model) {
-        List<Type> types = typeService.findAllTypeByUserId(user_id);
-        List<Tag> tags = tagService.findTagsByUserId(user_id);
-        User user = userService.findUserByid(user_id);
-        model.addAttribute("user", user);
-        model.addAttribute("types", types);
-        model.addAttribute("tags", tags);
+        model.addAttribute("user", userService.findUserByid(user_id));
+        model.addAttribute("types", typeService.findAllTypeByUserId(user_id));
+        model.addAttribute("tags", tagService.findTagsByUserId(user_id));
     }
 
     @GetMapping()
@@ -141,5 +134,4 @@ public class UserController {
         userService.update(this_user);
         return true;
     }
-
 }

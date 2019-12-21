@@ -1,5 +1,6 @@
 package com.jit.vo;
 
+import com.jit.pojo.Comment;
 import com.jit.pojo.Tag;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,5 +44,7 @@ public class BlogDto {
     private Integer type_id;
 
     private Boolean is_commentabled;
+
+    private List<Comment> comments;
 
 }

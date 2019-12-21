@@ -32,7 +32,7 @@ public class User implements Serializable {
 
     private String description;
 
-    private String wechat;
+    private String phone;
 
     private String github;
 

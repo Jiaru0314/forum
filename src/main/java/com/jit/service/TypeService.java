@@ -26,4 +26,6 @@ public interface TypeService {
 
     Type findTypeByTypeId(Integer typeId);
 
+    Type findTypeByTypeName(String typeName);
+
 }

@@ -20,8 +20,6 @@ import java.util.List;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
-    private Logger LOGGER = LoggerFactory.getLogger(getClass());
-
     @Autowired
     private UserMapper userMapper;
 
@@ -29,11 +27,9 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User user = userMapper.findUserByUsername(username);
-        if (user == null) {
+        if (null == user) {
             throw new UsernameNotFoundException(username + "用户不存在");
         }
-
-        LOGGER.info("用户名：" + username + " 角色：" + getAuthorities(username));
         return new org.springframework.security.core.userdetails.User(username, user.getPassword(), getAuthorities(username));
     }
 

@@ -2,10 +2,10 @@ package com.jit.service;
 
 import com.jit.mapper.TagMapper;
 import com.jit.pojo.Tag;
+import com.jit.util.ListUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,18 +31,14 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Integer updateTagNameById(String newTagName, Integer tagId) {
-        return tagMapper.updateTagNameById(newTagName, tagId);
+    public Integer updateTag(Tag tag) {
+        return tagMapper.updateTag(tag);
     }
+
 
     @Override
     public List<Tag> findAllTag() {
         return tagMapper.findAllTag();
-    }
-
-    @Override
-    public Integer findTagByTagName(String tagName) {
-        return tagMapper.findTagByTagName(tagName);
     }
 
     @Override
@@ -53,20 +49,17 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<Tag> findTagsByUserId(Integer userId) {
         String tagIds = tagMapper.findTagsByUserId(userId);
-        if (tagIds == null || "".equals(tagIds)) {
-            return null;
-        }
-        String[] split = tagIds.split(",");
-        List<Integer> tagId_list = new ArrayList<>();
-        for (String str : split) {
-            if (str.length() != 0) {
-                int id = Integer.parseInt(str);
-                if (!tagId_list.contains(id)) {
-                    tagId_list.add(id);
-                }
-            }
-        }
-//        System.out.println(tagId_list);
+        List<Integer> tagId_list = ListUtil.stringToList(tagIds);
         return tagMapper.findTagByIdList(tagId_list);
+    }
+
+    @Override
+    public Tag findTagByTagId(Integer tagId) {
+        return tagMapper.findTagById(tagId);
+    }
+
+    @Override
+    public Tag findTagByTagName(String tagName) {
+        return tagMapper.findTagByTagName(tagName);
     }
 }

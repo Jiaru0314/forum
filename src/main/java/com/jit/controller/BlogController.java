@@ -1,6 +1,8 @@
 package com.jit.controller;
 
-import com.jit.pojo.*;
+import com.jit.pojo.Blog;
+import com.jit.pojo.Type;
+import com.jit.pojo.User;
 import com.jit.service.BlogService;
 import com.jit.service.CommentService;
 import com.jit.service.TagService;
@@ -15,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @program: forum
@@ -30,7 +31,6 @@ public class BlogController {
     private static final String BLOGPAGE = "blog";
     private static final String BLOGS_INPUT = "blogs-input";
     private static final String REDIRECT_MANAGE = "redirect:/manage";
-    private static final String REDIRECT_BLOG = "redirect:/blog/";
 
     @Autowired
     private BlogService blogService;
@@ -47,8 +47,7 @@ public class BlogController {
         String raw_content = blogDto.getContent();
         blogDto.setContent(MarkdownUtils.markdownToHtml(raw_content));//将MarkDown格式转化成HTMl格式返回
         model.addAttribute("blog", blogDto);
-        List<Comment> comments = commentService.listComment(id);
-        model.addAttribute("comments", comments);
+        model.addAttribute("comments", commentService.listComment(id));
         Blog blog = blogService.getBlogById(id);
         blog.setViews(blog.getViews() + 1);
         blogService.updateBlog(blog);
@@ -58,10 +57,8 @@ public class BlogController {
     //去添加博客页面
     @GetMapping("/input")
     public String input(Model model) {
-        List<Tag> tags = tagService.findAllTag();
-        List<Type> types = typeService.findAllType();
-        model.addAttribute("tags", tags);
-        model.addAttribute("types", types);
+        model.addAttribute("tags", tagService.findAllTag());
+        model.addAttribute("types", typeService.findAllType());
         model.addAttribute("blog", new Blog());
         return BLOGS_INPUT;
     }
@@ -69,13 +66,9 @@ public class BlogController {
     //去修改博客页面
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
-        List<Tag> tags = tagService.findAllTag();
-        List<Type> types = typeService.findAllType();
-        model.addAttribute("tags", tags);
-        model.addAttribute("types", types);
-
-        Blog blog = blogService.getBlogById(id);
-        model.addAttribute("blog", blog);
+        model.addAttribute("tags", tagService.findAllTag());
+        model.addAttribute("types", typeService.findAllType());
+        model.addAttribute("blog", blogService.getBlogById(id));
         return BLOGS_INPUT;
     }
 
@@ -83,7 +76,6 @@ public class BlogController {
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes attributes) {
         Integer integer = blogService.deleteBlogById(id);
-
         if (integer > 0) {
             attributes.addFlashAttribute("message", "删除成功");
         } else {
@@ -91,15 +83,6 @@ public class BlogController {
         }
         return REDIRECT_MANAGE;
     }
-
-   /* //给博客点赞
-    @GetMapping("/prefer/{id}")
-    public String prefer(@PathVariable Integer id) {
-        Blog blog = blogService.getBlogById(id);
-        blog.setPrefers(blog.getPrefers() + 1);
-        blogService.updateBlog(blog);
-        return REDIRECT_BLOG + id;
-    }*/
 
     //给博客点赞
     @ResponseBody

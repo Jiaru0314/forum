@@ -2,6 +2,7 @@ package com.jit.pojo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import java.util.Date;
  **/
 @Data
 @NoArgsConstructor
+@Accessors(chain = true)
 public class Blog {
 
     private Integer id;

@@ -7,6 +7,7 @@ import com.jit.pojo.Blog;
 import com.jit.pojo.Tag;
 import com.jit.pojo.User;
 import com.jit.util.HTMLUtils;
+import com.jit.util.ListUtil;
 import com.jit.util.MarkdownUtils;
 import com.jit.vo.BlogDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,13 +127,8 @@ public class BlogServiceImpl implements BlogService {
     public List<BlogDto> findRecommendBlogs(Integer userId) {
         User this_user = userMapper.findUserById(userId);
         String follow_ids = this_user.getFollow_ids();
-        if (follow_ids != null && !follow_ids.equals("")) {
-            String[] split = follow_ids.split(",");
-            List<Integer> idList = new ArrayList<>();
-            for (String str : split) {
-                int id = Integer.parseInt(str);
-                idList.add(id);
-            }
+        List<Integer> idList = ListUtil.stringToList(follow_ids);
+        if (null != idList) {
             List<BlogDto> followedUserBlogs = blogMapper.findFollowedUserBlogs(idList);
             return transferContentList(followedUserBlogs);
         }
@@ -140,26 +136,32 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<BlogDto> findBlogDtoByTitleLike(String query) {
-        return blogMapper.findBlogByTitleLike(query);
+    public List<BlogDto> findBlogDtoBySearchParam(String query) {
+        return blogMapper.findBlogBySearchParamLike(query);
     }
 
     @Override
     public List<BlogDto> listRandBlogDto() {
-        return blogMapper.listRandBlogDto();
+        List<BlogDto> dtoList = blogMapper.listRandBlogDto();
+        return transferContentList(dtoList);
+    }
+
+    @Override
+    public List<BlogDto> listAllBlog() {
+        return blogMapper.listAllBlogDto();
     }
 
     /**
-     * 将BlogDtoList中的content转成HTMl格式返回
+     * 将BlogDtoList中的content转成普通文本格式返回
      *
      * @param blogDtoList
      * @return
      */
     public List<BlogDto> transferContentList(List<BlogDto> blogDtoList) {
         for (BlogDto blogDto : blogDtoList) {
-            String md_content = blogDto.getContent();
-            String html_content = MarkdownUtils.markdownToHtml(md_content);
-            blogDto.setContent(HTMLUtils.getText(html_content));
+            String md_content = blogDto.getContent();//获取MarkDown格式的内容
+            String html_content = MarkdownUtils.markdownToHtml(md_content);//将MarkDown格式内容转换成HTML格式
+            blogDto.setContent(HTMLUtils.getText(html_content));//将html格式转换成普通文本格式
         }
         return blogDtoList;
     }

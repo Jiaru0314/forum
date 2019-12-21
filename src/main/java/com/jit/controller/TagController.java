@@ -33,8 +33,7 @@ public class TagController {
 
     @GetMapping("/tags")
     public String toTagPage(Model model) {
-        List<Tag> tags = tagService.findAllTag();
-        model.addAttribute("tags", tags);
+        model.addAttribute("tags", tagService.findAllTag());
         return TAGS;
     }
 

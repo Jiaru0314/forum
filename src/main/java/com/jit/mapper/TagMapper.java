@@ -15,7 +15,7 @@ import java.util.List;
 public interface TagMapper {
 
     /**
-     * 添加标签
+     * 保存Tag
      *
      * @param tagName
      * @return
@@ -33,23 +33,22 @@ public interface TagMapper {
     Integer deleteTagById(@Param("tagId") Integer tagId);
 
     /**
-     * 通过Id修改TagName
+     * 修改Tag
      *
-     * @param newTagName
-     * @param tagId
+     * @param tag
      * @return
      */
-    @Update("UPDATE t_tag SET `name`=#{newTagName} WHERE id =#{tagId}")
-    Integer updateTagNameById(@Param("newTagName") String newTagName, @Param("tagId") Integer tagId);
+    @Update("UPDATE `t_tag` SET `name` = #{tag.name} ,`counts` = #{tag.counts} WHERE `id` = #{tag.id}")
+    Integer updateTag(@Param("tag") Tag tag);
 
     /**
-     * 通过Id修改TagCounts
+     * 通过TagId查询Tag
      *
      * @param tagId
      * @return
      */
-    @Update("UPDATE t_tag SET `counts` = `counts`+1 WHERE id =#{tagId}")
-    Integer updateTagCountsByTypeId(@Param("tagId") Integer tagId);
+    @Select("SELECT * FROM `t_tag` WHERE `id` = #{tagId}")
+    Tag findTagById(@Param("tagId") Integer tagId);
 
     /**
      * 查询所有的Tag
@@ -58,15 +57,6 @@ public interface TagMapper {
      */
     @Select("SELECT * FROM t_tag ")
     List<Tag> findAllTag();
-
-    /**
-     * 通过TagName查询Tag
-     *
-     * @param tagName
-     * @return
-     */
-    @Select("select count(*) from t_tag where name = #{tagName}")
-    Integer findTagByTagName(@Param("tagName") String tagName);
 
     /**
      * 查询最热的counts个Tag
@@ -78,7 +68,7 @@ public interface TagMapper {
     List<Tag> findHottestTag(@Param("counts") Integer counts);
 
     /**
-     * 查询某用户所有的Id 拼接成字符串返回
+     * 查询某用户所有的TagId 拼接成字符串返回
      *
      * @param userId
      * @return
@@ -87,14 +77,23 @@ public interface TagMapper {
     String findTagsByUserId(@Param("userId") Integer userId);
 
     /**
-     * 通过TagId查询Tag
+     * 通过TagName查询Tag
      *
-     * @param tagId
+     * @param tagName
      * @return
      */
-    @Select("SELECT * FROM `t_tag` WHERE `id` = #{tagId}")
-    Tag findTagById(@Param("tagId") Integer tagId);
+    @Select("SELECT * FROM `t_tag` WHERE `name` = #{tagName}")
+    Tag findTagByTagName(String tagName);
 
+
+
+    /*XMl配置方式*/
+
+    /**
+     * 通过TagIdList查询所有的Tag
+     *
+     * @param idList
+     * @return
+     */
     List<Tag> findTagByIdList(@Param("idList") List<Integer> idList);
-
 }

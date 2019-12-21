@@ -2,7 +2,7 @@ package com.jit.service;
 
 import com.jit.mapper.UserMapper;
 import com.jit.pojo.User;
-import org.apache.ibatis.annotations.Mapper;
+import com.jit.util.ListUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,9 +24,9 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public void register(String username, String password) {
+    public Integer register(String username, String password) {
         String encodePassword = passwordEncoder.encode(password);
-        userMapper.saveUser(username, encodePassword);
+        return userMapper.saveUser(username, encodePassword);
     }
 
     @Override
@@ -45,12 +45,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllUser() {
-        return userMapper.findAllUser();
+    public List<User> findHotUsers() {
+        return userMapper.findHotUsers();
     }
 
     @Override
     public User checkUsername(String username) {
         return userMapper.findUserByUsername(username);
     }
+
+    @Override
+    public List<User> findFansList(Integer userId) {
+        User user = userMapper.findUserById(userId);
+        List<Integer> fansList = ListUtil.stringToList(user.getFans_ids());
+        return userMapper.findRelatedUsers(fansList);
+    }
+
+    @Override
+    public List<User> findFollowsList(Integer userId) {
+        User user = userMapper.findUserById(userId);
+        List<Integer> followsList = ListUtil.stringToList(user.getFollow_ids());
+        return userMapper.findRelatedUsers(followsList);
+    }
+
 }

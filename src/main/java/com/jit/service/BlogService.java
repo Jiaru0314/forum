@@ -40,8 +40,10 @@ public interface BlogService {
 
     List<BlogDto> findRecommendBlogs(Integer userId);
 
-    List<BlogDto> findBlogDtoByTitleLike(String query);
+    List<BlogDto> findBlogDtoBySearchParam(String query);
 
     List<BlogDto> listRandBlogDto();
+
+    List<BlogDto> listAllBlog();
 
 }

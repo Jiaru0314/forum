@@ -25,14 +25,4 @@ public class MarkdownUtils {
         return renderer.render(document);
     }
 
-    public static void main(String[] args) {
-        String md_str = "###我和我的祖国\n" +
-                "#一刻也不分离\n" +
-                "***#####徐志强*******\n" +
-                "\n" +
-                "------------\n" +
-                "\n" +
-                "# > ";
-        System.out.println(markdownToHtml(md_str));
-    }
 }

@@ -19,9 +19,11 @@
             <a href="index.html" class="item m-mobile-hide" th:classappend="${n==1} ? 'active'" th:href="@{/}">推荐</a>
             <a href="index.html" class="item m-mobile-hide" th:classappend="${n==2} ? 'active'" th:href="@{/recommend}">关注</a>
             <a href="./blogs-input.html" class="item m-mobile-hide" th:classappend="${n==3} ? 'active'"
-               th:href="@{/blog/input}">发布文章</a>
+               th:href="@{/blog/input}" sec:authorize="isAuthenticated()">发布文章</a>
             <a href="./manage-blog.html" class="item m-mobile-hide" th:classappend="${n==4} ? 'active'"
                th:href="@{/manage}" sec:authorize="isAuthenticated()">个人文章管理</a>
+            <a href="./admin/manage-blog.html" class="item m-mobile-hide" th:classappend="${n==9} ? 'active'"
+               th:href="@{/admin/manage}" sec:authorize="hasRole('ROLE_ADMIN')">平台文章管理</a>
             <a href="./users.html" class="item m-mobile-hide" th:classappend="${n==5} ? 'active'" th:href="@{/hotUser}">热门博主</a>
             <a href="#" class="item m-mobile-hide" th:classappend="${n==6} ? 'active'" th:href="@{/tools}">友链</a>
             <a href="./archives.html" class="item m-mobile-hide" th:classappend="${n==7} ? 'active'"

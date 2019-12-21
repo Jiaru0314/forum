@@ -43,7 +43,7 @@ public class TypeServiceImpl implements TypeService {
 
     @Override
     public List<Type> findHottestType(Integer counts) {
-        return typeMapper.findHotsestType(counts);
+        return typeMapper.findHottestType(counts);
     }
 
     @Override
@@ -54,5 +54,10 @@ public class TypeServiceImpl implements TypeService {
     @Override
     public Type findTypeByTypeId(Integer typeId) {
         return typeMapper.findTypeByTypeId(typeId);
+    }
+
+    @Override
+    public Type findTypeByTypeName(String typeName) {
+        return typeMapper.findTypeByTypeName(typeName);
     }
 }

@@ -33,17 +33,15 @@ public class TypeController {
 
     @GetMapping("/types")
     public String toTypePage(Model model) {
-        List<Type> types = typeService.findAllType();
-        model.addAttribute("types", types);
+        model.addAttribute("types", typeService.findAllType());
         return TYPES;
     }
 
     @GetMapping("/{id}")
     public String toType(Model model, @PathVariable("id") Integer id) {
         List<BlogDto> blogs = blogService.findBlogDtoByTypeId(id);
-        int blogcounts = blogs.size();
         model.addAttribute("blogs", blogs);
-        model.addAttribute("blogCounts", blogcounts);
+        model.addAttribute("blogCounts", blogs.size());
         return SEARCH;
     }
 }
