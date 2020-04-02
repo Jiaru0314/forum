@@ -37,7 +37,7 @@ JDK:JDK11
 
  
 ## 四、网页部署
-http://118.178.91.123:8080
+http://xuzhiqiang.xyz
  
  
 
