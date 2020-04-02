@@ -8,7 +8,7 @@ HTML、CSS、JQuery、Semantic UI、Thymeleaf模板引擎、MarkDown等
 
 ### 后端技术
 
-Spring、SpringMVC、Mybatis、SpringSecurity、MySQL8、Maven等
+Spring、SpringMVC、Mybatis、SpringSecurity、MySQL8、Maven、Redis等
 
 ### 安卓端技术
 
