@@ -3,6 +3,7 @@ package com.jit.service;
 import com.jit.mapper.TypeMapper;
 import com.jit.pojo.Type;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,8 @@ public class TypeServiceImpl implements TypeService {
     @Autowired
     private TypeMapper typeMapper;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     public Integer saveType(String typeName) {
@@ -43,7 +46,19 @@ public class TypeServiceImpl implements TypeService {
 
     @Override
     public List<Type> findHottestType(Integer counts) {
-        return typeMapper.findHottestType(counts);
+        //从redis中获取数据
+        List<Type> typeList = redisTemplate.boundListOps("hotTypeList").range(0, -1);
+        //如果数据不存在
+        if (null == typeList || typeList.size() == 0) {
+            System.out.println("从数据库中获取type，并将数据写入缓存");
+            typeList = typeMapper.findHottestType(counts);
+            for (Type type : typeList) {
+                redisTemplate.boundListOps("hotTypeList").rightPush(type);
+            }
+        } else {
+            System.out.println("从redis中获取type");
+        }
+        return typeList;
     }
 
     @Override

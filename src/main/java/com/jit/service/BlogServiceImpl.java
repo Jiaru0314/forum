@@ -11,13 +11,12 @@ import com.jit.util.ListUtil;
 import com.jit.util.MarkdownUtils;
 import com.jit.vo.BlogDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundZSetOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @program: forum
@@ -27,6 +26,8 @@ import java.util.Map;
  **/
 @Service
 public class BlogServiceImpl implements BlogService {
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Autowired
     private BlogMapper blogMapper;
@@ -54,12 +55,37 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<BlogDto> findNewestBlogs(Integer rows) {
-        return blogMapper.findNewestBlogs(rows);
+        //从redis中获取数据
+        List<BlogDto> blogDtoList = redisTemplate.boundListOps("newBlogList").range(0, -1);
+        if (null == blogDtoList || blogDtoList.size() == 0) {
+            //从数据库中获取数据
+            blogDtoList = blogMapper.findNewestBlogs(rows);
+            System.out.println("从数据库中获取最新Blog数据,并将数据写入缓存");
+            //将数据存入缓存
+            for (BlogDto blogDto : blogDtoList) {
+                redisTemplate.boundListOps("newBlogList").rightPush(blogDto);
+            }
+        } else {
+            System.out.println("从redis中获取Blog数据");
+        }
+        return blogDtoList;
     }
 
     @Override
     public List<BlogDto> findHotestBlogs() {
-        List<BlogDto> blogDtoList = blogMapper.findHottestBlogs();
+        //从redis中获取数据
+        List<BlogDto> blogDtoList = redisTemplate.boundListOps("hotBlogList").range(0, -1);
+        if (null == blogDtoList || blogDtoList.size() == 0) {
+            //从数据库中获取数据
+            blogDtoList = blogMapper.findHottestBlogs();
+            System.out.println("从数据库中获取Blog数据,并将数据写入缓存");
+            //将数据存入缓存
+            for (BlogDto blogDto : blogDtoList) {
+                redisTemplate.boundListOps("hotBlogList").rightPush(blogDto);
+            }
+        } else {
+            System.out.println("从redis中获取Blog数据");
+        }
         return transferContentList(blogDtoList);
     }
 

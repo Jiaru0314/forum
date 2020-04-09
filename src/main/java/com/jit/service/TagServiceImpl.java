@@ -2,8 +2,10 @@ package com.jit.service;
 
 import com.jit.mapper.TagMapper;
 import com.jit.pojo.Tag;
+import com.jit.pojo.Type;
 import com.jit.util.ListUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +18,9 @@ import java.util.List;
  **/
 @Service
 public class TagServiceImpl implements TagService {
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Autowired
     private TagMapper tagMapper;
@@ -43,14 +48,30 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<Tag> findHottestTag(Integer counts) {
-        return tagMapper.findHottestTag(counts);
+        //从redis中获取数据
+        List<Tag> tagList = redisTemplate.boundListOps("hotTagList").range(0, -1);
+        //如果数据不存在
+        if (null == tagList || tagList.size() == 0) {
+            System.out.println("从数据库中获取tag数据，并将数据写入缓存");
+            tagList = tagMapper.findHottestTag(counts);
+            for (Tag tag : tagList) {
+                redisTemplate.boundListOps("hotTagList").rightPush(tag);
+            }
+        } else {
+            System.out.println("从redis获取tag");
+        }
+        return tagList;
     }
 
     @Override
     public List<Tag> findTagsByUserId(Integer userId) {
         String tagIds = tagMapper.findTagsByUserId(userId);
         List<Integer> tagId_list = ListUtil.stringToList(tagIds);
-        return tagMapper.findTagByIdList(tagId_list);
+        if (tagId_list != null && tagId_list.size() > 0) {
+            return tagMapper.findTagByIdList(tagId_list);
+        } else {
+            return null;
+        }
     }
 
     @Override

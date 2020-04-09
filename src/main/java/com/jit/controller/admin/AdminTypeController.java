@@ -87,11 +87,4 @@ public class AdminTypeController {
         return "redirect:/admin/types";
     }
 
-   /* @GetMapping("/types/{id}/delete")
-    public String delete(@PathVariable Integer id, RedirectAttributes attributes) {
-        typeService.deleteTypeById(id);
-        attributes.addFlashAttribute("message", "删除成功");
-        return "redirect:/admin/types";
-    }*/
-
 }

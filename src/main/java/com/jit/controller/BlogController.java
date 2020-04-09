@@ -45,7 +45,8 @@ public class BlogController {
     public String blog(@PathVariable Integer id, Model model) {
         BlogDto blogDto = blogService.findBlogDto(id);
         String raw_content = blogDto.getContent();
-        blogDto.setContent(MarkdownUtils.markdownToHtml(raw_content));//将MarkDown格式转化成HTMl格式返回
+        //将MarkDown格式转化成HTMl格式返回
+        blogDto.setContent(MarkdownUtils.markdownToHtml(raw_content));
         model.addAttribute("blog", blogDto);
         model.addAttribute("comments", commentService.listComment(id));
         Blog blog = blogService.getBlogById(id);
@@ -54,7 +55,12 @@ public class BlogController {
         return BLOGPAGE;
     }
 
-    //去添加博客页面
+    /**
+     * 去添加博客页面
+     *
+     * @param model
+     * @return
+     */
     @GetMapping("/input")
     public String input(Model model) {
         model.addAttribute("tags", tagService.findAllTag());
@@ -63,7 +69,13 @@ public class BlogController {
         return BLOGS_INPUT;
     }
 
-    //去修改博客页面
+    /**
+     * 去修改博客页面
+     *
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
         model.addAttribute("tags", tagService.findAllTag());
@@ -72,7 +84,13 @@ public class BlogController {
         return BLOGS_INPUT;
     }
 
-    //删除博客
+    /**
+     * 删除博客
+     *
+     * @param id
+     * @param attributes
+     * @return
+     */
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes attributes) {
         Integer integer = blogService.deleteBlogById(id);
@@ -84,7 +102,12 @@ public class BlogController {
         return REDIRECT_MANAGE;
     }
 
-    //给博客点赞
+    /**
+     * 给博客点赞
+     *
+     * @param id
+     * @return
+     */
     @ResponseBody
     @PostMapping("/prefer/{id}")
     public String ajax(@PathVariable Integer id) {
@@ -95,7 +118,14 @@ public class BlogController {
         return "success";
     }
 
-    //添加、修改Blog
+    /**
+     * 添加、修改Blog
+     *
+     * @param blog
+     * @param attributes
+     * @param session
+     * @return
+     */
     @PostMapping("/input")
     public String input(Blog blog, RedirectAttributes attributes, HttpSession session) {
         Integer result;//判断是否修改的标志

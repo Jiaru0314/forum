@@ -3,6 +3,8 @@ package com.jit.pojo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @program: forum
  * @description: Tag实体类
@@ -11,7 +13,7 @@ import lombok.NoArgsConstructor;
  **/
 @Data
 @NoArgsConstructor
-public class Tag {
+public class Tag implements Serializable {
 
     private Integer id;
 

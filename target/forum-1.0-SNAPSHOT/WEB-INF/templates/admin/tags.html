@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标签列表</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/animate.css">
+</head>
+<body>
+
+<!--导航-->
+<nav th:replace="_fragments :: menu(0)" class="ui segment me-nav">
+    <div class="ui">
+        <div class="ui secondary stackable menu massive">
+            <h2 class="ui grey header item">Forum</h2>
+            <a href="#" class="item">首页</a>
+            <a href="./recommend.html" class="item">推荐</a>
+            <a href="./blogs-input.html" class="item">发布文章</a>
+            <a href=".-blog.html" class="item">文章管理</a>
+            <a href="./users.html" class="item">热门博主</a>
+            <a href="#" class="item">友链</a>
+            <a href="./archives.html" class="item">归档</a>
+            <div class="item ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="Search....">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+            <a href="./register.html" class="item">注册</a>
+            <a href="./login.html" class="item">登录</a>
+            <a href="#" class="item">退出登录</a>
+            <a href="./me.html" class="right item">我</a>
+        </div>
+    </div>
+</nav>
+
+<div class="ui attached pointing menu me-margin-top">
+    <div class="ui container">
+        <div class="right menu">
+            <a href="./tags-input.html" th:href="@{/admin/tag/input}" class="item">新增</a>
+            <a href="./tags.html" th:href="@{/admin/tags}" class="blue active item">列表</a>
+        </div>
+    </div>
+</div>
+
+<!--中间内容-->
+<div class="m-container-small m-padded-tb-big">
+    <div class="ui container">
+        <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+            <i class="close icon"></i>
+            <div class="header">提示：</div>
+            <p th:text="${message}">恭喜，操作成功！</p>
+        </div>
+        <table class="ui compact blue table">
+            <thead>
+            <tr>
+                <th></th>
+                <th>名称</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="tag,iterStat : ${tags}">
+                <td th:text="${iterStat.count}">1</td>
+                <td th:text="${tag.name}">刻意练习清单</td>
+                <td>
+                    <a href="#" th:href="@{/admin/tag/{id}/input(id=${tag.id})}"
+                       class="ui mini blue basic button">编辑</a>
+                    <!-- <a href="#" th:href="@{/admin/tag/{id}/delete(id=${tag.id})}"
+                        class="ui mini red basic button">删除</a>-->
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th colspan="9">
+                    <!--分页按钮-->
+                    <div class="ui bottom attached " th:if="${page.pages}>1">
+                        <div class="ui middle aligned two column grid">
+                            <div class="column">
+                                <a href="#" th:href="@{/admin/tags(page=${page.pageNum}-1)}"
+                                   th:unless="${page.isFirstPage}"
+                                   class="ui mini grey basic button">上一页</a>
+                            </div>
+                            <div class="right aligned column">
+                                <a href="#" th:href="@{/admin/tags(page=${page.pageNum}+1)}"
+                                   th:unless="${page.isLastPage}"
+                                   class="ui mini grey basic button">下一页</a>
+                            </div>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<!--底部footer-->
+<footer th:replace="_fragments :: footer" class="ui vertical segment me-margin-top me-margin-bottom">
+    <div class="ui center aligned container">
+        <div class="ui section divider"></div>
+        <p class="">Copyright © 2019 - 2020 XZQ</p>
+    </div>
+</footer>
+
+
+<!--/*/<th:block th:replace="_fragments :: script">/*/-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+
+    //消息提示关闭初始化
+    $('.message .close')
+        .on('click', function () {
+            $(this)
+                .closest('.message')
+                .transition('fade');
+        });
+</script>
+</body>
+</html>

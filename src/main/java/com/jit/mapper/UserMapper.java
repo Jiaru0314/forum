@@ -68,7 +68,7 @@ public interface UserMapper {
     @Select("select * from t_user where username = #{username}")
     User findUserByUsername(@Param("username") String username);
 
-    
+
 
     /*XML配置方式*/
 

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @program: blog
+ * @program: forum
  * @description: Strategy used to handle a successful user authentication.
  * @author: XZQ
  * @create: 2019-11-03 16:25

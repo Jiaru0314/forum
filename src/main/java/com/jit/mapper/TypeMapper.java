@@ -46,7 +46,7 @@ public interface TypeMapper {
      *
      * @return
      */
-    @Select("SELECT * FROM t_type ORDER BY counts DESC LIMIT #{counts} ")
+    @Select("SELECT * FROM t_type ORDER BY counts DESC limit #{counts}")
     List<Type> findHottestType(@Param("counts") Integer counts);
 
     /**

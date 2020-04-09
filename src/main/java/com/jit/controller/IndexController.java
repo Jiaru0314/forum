@@ -10,16 +10,19 @@ import com.jit.service.TypeService;
 import com.jit.service.UserService;
 import com.jit.vo.BlogDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import sun.rmi.runtime.NewThreadAction;
 
 import javax.servlet.http.HttpSession;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.*;
 
 /**
  * @program: forum
@@ -42,6 +45,9 @@ public class IndexController {
     private static final String REDIRECT_REGISTER = "redirect:/register";
 
     @Autowired
+    private ThreadPoolTaskExecutor threadPool;
+
+    @Autowired
     private BlogService blogService;
 
     @Autowired
@@ -54,18 +60,43 @@ public class IndexController {
     private UserService userService;
 
     @GetMapping("/")
-    public String toIndex(Model model, @RequestParam(defaultValue = "1", required = true, value = "page") Integer page) {
-        Integer pageSize = 8;//每页显示记录数
+    public String toIndex(Model model) {
+        /**
+         * 每页显示记录数 @RequestParam(defaultValue = "1", value = "page") Integer page
+         */
+//        Integer pageSize = 8;
         //分页查询
-        PageHelper.startPage(page, pageSize);
-        List<BlogDto> blogDtoList = blogService.findHotestBlogs();
-        PageInfo<BlogDto> pageInfo = new PageInfo<>(blogDtoList);
+//        PageHelper.startPage(page, pageSize);
+//        List<BlogDto> blogDtoList = blogService.findHotestBlogs();
+//        PageInfo<BlogDto> pageInfo = new PageInfo<>(blogDtoList);
+//        model.addAttribute("page", pageInfo);
 
-        model.addAttribute("types", typeService.findHottestType(6));
-        model.addAttribute("tags", tagService.findHottestTag(6));
-        model.addAttribute("blogs", blogDtoList);
-        model.addAttribute("page", pageInfo);
-        model.addAttribute("newBlogs", blogService.findNewestBlogs(8));
+        long startTime = System.currentTimeMillis();
+        CountDownLatch countDownLatch = new CountDownLatch(4);
+
+        threadPool.execute(() -> {
+            model.addAttribute("types", typeService.findHottestType(6));
+            countDownLatch.countDown();
+        });
+        threadPool.execute(() -> {
+            model.addAttribute("tags", tagService.findHottestTag(6));
+            countDownLatch.countDown();
+        });
+        threadPool.execute(() -> {
+            model.addAttribute("blogs", blogService.findHotestBlogs());
+            countDownLatch.countDown();
+        });
+        threadPool.execute(() -> {
+            model.addAttribute("newBlogs", blogService.findNewestBlogs(8));
+            countDownLatch.countDown();
+        });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("操作耗时\t" + (System.currentTimeMillis() - startTime) + " ms");
         return INDEX;
     }
 
@@ -130,11 +161,14 @@ public class IndexController {
         return TOOLS;
     }
 
-    //处理注册
+    /**
+     * 处理注册
+     */
     @PostMapping("register")
     public String register(@RequestParam String username,
                            @RequestParam String password,
                            RedirectAttributes attributes) {
+        System.out.println("进入注册");
         User user = userService.checkUsername(username);
         //如果用户名存在
         if (user != null) {
@@ -142,9 +176,11 @@ public class IndexController {
             return REDIRECT_REGISTER;
         } else {
             //用户名不存在 注册用户
-            userService.register(username, password);
+            System.out.println("1");
+            Integer value = userService.register(username, password);
+            System.out.println("2");
             attributes.addFlashAttribute("message", "注册成功，请登录");
+            return REDIRECT_LOGIN;
         }
-        return REDIRECT_LOGIN;
     }
 }

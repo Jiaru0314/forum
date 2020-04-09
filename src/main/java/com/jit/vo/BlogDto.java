@@ -5,6 +5,7 @@ import com.jit.pojo.Tag;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  **/
 @Data
 @NoArgsConstructor
-public class BlogDto {
+public class BlogDto implements Serializable {
     private Integer id;
 
     private String title;

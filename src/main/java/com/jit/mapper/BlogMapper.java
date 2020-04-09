@@ -100,7 +100,7 @@ public interface BlogMapper {
      * @return
      */
     @Select("SELECT `t_blog`.`id`,`title`,`content`,`create_time`,`user_id`,`views` ,`avatar`,`username` FROM `t_blog` " +
-            "LEFT JOIN `t_user` ON `user_id` =`t_user`.`id`  ORDER BY views DESC")
+            "LEFT JOIN `t_user` ON `user_id` =`t_user`.`id`  ORDER BY views DESC limit 20")
     List<BlogDto> findHottestBlogs();
 
     /**
