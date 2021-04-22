@@ -15,7 +15,7 @@
         <!-- spring版本号 -->
         <spring.version>5.2.0.RELEASE</spring.version>
         <!-- mybatis版本号 -->
-        <mybatis.version>3.4.1</mybatis.version>
+        <mybatis.version>3.5.6</mybatis.version>
         <!-- mysql驱动版本号 -->
         <mysql-driver.version>8.0.17</mysql-driver.version>
         <spring-security.version>5.2.0.RELEASE</spring-security.version>
