@@ -17,7 +17,7 @@
         <!-- mybatis版本号 -->
         <mybatis.version>3.4.1</mybatis.version>
         <!-- mysql驱动版本号 -->
-        <mysql-driver.version>8.0.17</mysql-driver.version>
+        <mysql-driver.version>8.0.28</mysql-driver.version>
         <spring-security.version>5.2.0.RELEASE</spring-security.version>
         <lombok.version>1.18.8</lombok.version>
         <java.version>1.8</java.version>
